@@ -22,34 +22,51 @@ Route::get('/search', function()
 
 Route::post('/search', function()
 {
-	// If user supplied album name, save it, otherwise make it an empty string
+	// Check for album query
 	$album = (Input::get('album_name') ? Input::get('album_name') : '');
-	// If user supplied band name, save it, otherwise make it an empty string
-	$band = (Input::get('band_name') ? Input::get('band_name') : '');
-	// If search by genre, save, or make empty string
-	$genre = (Input::get('genre') ? Input::get('genre') : '');
-	// Search by country...
-	$country = (Input::get('country') ? Input::get('country') : '');
-	// If user specified ordering, save preference. Default to sort by Rating.
-	$order_by = (Input::get('order_by') ? Input::get('order_by'):'avg_rating');
 	// Note if user wants exact matches
 	$albums_compare=(Input::get('exact_album_title')?"=":"LIKE");
+
+	// Check for band query and for what kind of search to make
+	$band = (Input::get('band_name') ? Input::get('band_name') : '');
 	$bands_compare = (Input::get('exact_band_title')?"=":'LIKE');
+
+	// Check for genre query
+	$genre = (Input::get('genre') ? Input::get('genre') : '');
 	$genres_compare = (Input::get('exact_genre')?"=":'LIKE');
-	// Save specified release type, if any
+
+	// Check for country query (always looking for exact match)
+	$country = (Input::get('country') ? Input::get('country') : '');
+
+	// Check for release-type query
 	$release_type = (Input::get('release_type') ? Input::get('release_type') : '');
+	// Check for label query
 	$label = (Input::get('label') ? Input::get('label') : '');
+	if (Input::get('unlisted_label')){
+		$label = Input::get('unlisted_label');
+	}
+	if (Input::get('no_label')){
+		$label = Input::get('no_label');
+	}
+
+	// Check for sort preference (default sort by rating)
+	$order_by = (Input::get('order_by') ? Input::get('order_by'):'avg_rating');
+
+	// Check for review number query
+	$reviews = Input::get('reviews');
 
 	return View::make('search_results')
 		->with('album',$album)
-		->with('band',$band)
-		->with('genre', $genre)
-		->with('order_by', $order_by)
 		->with('albums_compare', $albums_compare)
+		->with('band',$band)
 		->with('bands_compare', $bands_compare)
+		->with('genre', $genre)
 		->with('genres_compare', $genres_compare)
+		->with('country', $country)
 		->with('release_type', $release_type)
-		->with('country', $country);
+		->with('label', $label)
+		->with('order_by', $order_by)
+		->with('reviews', $reviews);
 });
 
 // Once someone selects an album, go to the album's rating page to rate it..

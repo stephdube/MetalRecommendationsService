@@ -52,17 +52,22 @@ $albums = DB::table('albums')
 		{	// user wants to search by genre
 			$query->where('genre', $genres_compare, $genre);
 		}
-		if (!empty($release_type))
-		{	// user wants to search by release type
-			$query->where('release_type', "=", $release_type);
-		}
 		if (!empty($country))
 		{	// user wants to search by country
 			$query->where('country', "=", $country);
 		}
+		if (!empty($release_type))
+		{	// user wants to search by release type
+			$query->where('release_type', "=", $release_type);
+		}
+		if (!empty($label))
+		{	// user wants to search by label
+			$query->where('label', "=", $label);
+		}
 	})
 	// Combine data into unique rows based on albums
 	->groupBy('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label')
+	->having('review_count', '>=', $reviews)
 	->orderBy($order_by, $direction)
 	->get();
 
