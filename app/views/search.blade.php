@@ -7,9 +7,15 @@
 $countries = DB::table('bands')->select('country')
 	->groupBy('country')->get();
 
-$labels = DB::table('albums')->select('label', DB::raw('count(*)'))
+$labels = DB::table('albums')->select('label', DB::raw('count(*) as count'))
 	->where('label', '!=', 'N/A')
-	->groupBy('label')->having('count(*)', '>', 100)->get();
+	->groupBy('label')->having('count', '>', 50)->get();
+
+
+	foreach($labels as $label)
+	{
+		echo $label->label . "," . $label->count . "<br>";
+	}
 
 $release_types = DB::table('albums')->select('release_type')
 	->groupBy('release_type')->get();
