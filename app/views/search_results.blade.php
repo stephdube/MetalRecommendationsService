@@ -18,8 +18,6 @@ else
 $album = (($albums_compare=='LIKE') ? "%".$album."%" : $album);
 // If not looking for an exact match on band name, edit band query string
 $band = (($bands_compare=='LIKE') ? "%".$band."%" : $band);
-// If not looking for an exact match on genre, edit genre query string
-$genre = (($genres_compare=='LIKE') ? "%".$genre."%" : $genre);
 
 // Query for albums that match user's search input along with relevant album-data
 $albums = DB::table('albums')
@@ -38,7 +36,7 @@ $albums = DB::table('albums')
 		DB::raw('count(CASE WHEN 80 < rating AND rating <= 90 THEN 1 END) as rat90'),
 		DB::raw('count(CASE WHEN 90 < rating THEN 1 END) as rat100'))
 	// Filter albums user's search queries
-	->where(function($query) use ($album, $albums_compare, $band, $bands_compare, $genre, $genres_compare, $release_type, $country)
+	->where(function($query) use ($album, $albums_compare, $band, $bands_compare, $genre, $release_type, $country)
 	{
 		if (!empty($album))
 		{	// user wants to search by album titles
@@ -50,7 +48,7 @@ $albums = DB::table('albums')
 		}
 		if (!empty($genre))
 		{	// user wants to search by genre
-			$query->where('genre', $genres_compare, $genre);
+			$query->where('genre', 'LIKE', "%$genre%");
 		}
 		if (!empty($country))
 		{	// user wants to search by country
@@ -64,10 +62,13 @@ $albums = DB::table('albums')
 		{	// user wants to search by label
 			$query->where('label', "=", $label);
 		}
+		if (!empty($reviews))
+		{ 	// user has specified minimum number of reviews
+			$query->having('review_count', '>=', $reviews);
+		}
 	})
 	// Combine data into unique rows based on albums
 	->groupBy('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label')
-	->having('review_count', '>=', $reviews)
 	->orderBy($order_by, $direction)
 	->get();
 

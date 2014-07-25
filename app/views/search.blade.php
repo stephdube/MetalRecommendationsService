@@ -21,8 +21,7 @@ Title: <input type="text" name="album_name">
 Band: <input type="text" name="band_name">
 	<input type="checkbox" name="exact_band_name">Exact match?<br>
 
-Genre: <input type="text" name="genre">
-	<input type="checkbox" name="exact_genre">Exact match?<br>
+Genre: <input type="text" name="genre"><br>
 
 Country: <select name="country">
 		<option value="">Any country</option>
@@ -57,7 +56,7 @@ Order results by: <ul>
 	<li>Alphabetically by band name <input type="radio" name="order_by" value="band_name"></li>
 </ul>
 
-Show albums with <select name="reviews">
+Show releases with <select name="reviews">
 	<?php for($i=0; $i<21; $i++):?>
 		<option value='<?php echo $i; ?>'><?php echo $i; ?></option>
 	<?php endfor; ?>
