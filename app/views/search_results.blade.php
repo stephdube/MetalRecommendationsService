@@ -36,7 +36,7 @@ $albums = DB::table('albums')
 		DB::raw('count(CASE WHEN 80 < rating AND rating <= 90 THEN 1 END) as rat90'),
 		DB::raw('count(CASE WHEN 90 < rating THEN 1 END) as rat100'))
 	// Filter albums user's search queries
-	->where(function($query) use ($album, $albums_compare, $band, $bands_compare, $genre, $release_type, $country)
+	->where(function($query) use ($album, $albums_compare, $band, $bands_compare, $genre, $release_type, $country, $label)
 	{
 		if (!empty($album))
 		{	// user wants to search by album titles
@@ -48,7 +48,7 @@ $albums = DB::table('albums')
 		}
 		if (!empty($genre))
 		{	// user wants to search by genre
-			$query->where('genre', 'LIKE', "%$genre%");
+			$query->where('genre', 'LIKE', $genre);
 		}
 		if (!empty($country))
 		{	// user wants to search by country
@@ -62,13 +62,10 @@ $albums = DB::table('albums')
 		{	// user wants to search by label
 			$query->where('label', "=", $label);
 		}
-		if (!empty($reviews))
-		{ 	// user has specified minimum number of reviews
-			$query->having('review_count', '>=', $reviews);
-		}
 	})
 	// Combine data into unique rows based on albums
 	->groupBy('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label')
+	->having('review_count', '>=', $reviews)
 	->orderBy($order_by, $direction)
 	->get();
 

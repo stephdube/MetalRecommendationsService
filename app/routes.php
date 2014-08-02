@@ -8,89 +8,27 @@ Route::get('/', function(){
 /*--------------------------------------------------------
 *	Generate form for users to log in
 *---------------------------------------------------------*/
-Route::get('/login', 
-	// if user is already logged in, redirect away from login form
-	array('before' => 'guest',
-        function() {
-            return View::make('login');
-        }
-    )
-);
+Route::get('/login', 'UserController@getLogin');
 
 /*--------------------------------------------------------
 *	Process form to log users in
 *---------------------------------------------------------*/
-Route::post('/login', 
-    array('before' => 'csrf', 
-        function() {
-
-            $credentials = Input::only('username', 'password');
-
-            if (Auth::attempt($credentials, $remember = true)) {
-                return Redirect::intended('/')->with('flash_message', 'Welcome back');
-            }
-            else {
-                return Redirect::to('/login')->with('flash_message', 'Log in failed; please try again.');
-            }
-
-            return Redirect::to('login');
-        }
-    )
-);
+Route::post('/login', ['before' => 'csrf', 'uses' => 'UserController@postLogin'] );
 
 /*--------------------------------------------------------
 *	Log users out
 *---------------------------------------------------------*/
-Route::get('/logout', function() {
-
-    # Log out
-    Auth::logout();
-
-    # Send them to the homepage
-    return Redirect::to('/');
-
-});
+Route::get('/logout', ['before' => 'auth', 'uses' => 'UserController@getLogout'] );
 
 /*--------------------------------------------------------
 *	Generate form for users to create account
 *---------------------------------------------------------*/
-Route::get('/signup', 
-	// if account already exists, redirect users away from signup form
-	array('before'=>'guest', 
-		function(){
-			return View::make('signup');
-		}
-	)
-);
+Route::get('/signup', 'UserController@getSignup');
 
 /*--------------------------------------------------------
 *	Process form for users to create account
 *---------------------------------------------------------*/
-Route::post('/signup', 
-    array('before' => 'csrf', 
-        function() {
-
-            $user = new User;
-            $user->username    = Input::get('username');
-            $user->password = Hash::make(Input::get('password'));
-
-            # Try to add the user 
-            try {
-                $user->save();
-            }
-            # Fail
-            catch (Exception $e) {
-                return Redirect::to('/signup')->with('flash_message', 'Sign up failed; please try again.')->withInput();
-            }
-
-            # Log the user in
-            Auth::login($user);
-
-            return Redirect::to('/')->with('flash_message', 'Welcome to Metal Recommendations');
-
-        }
-    )
-);
+Route::post('/signup', ['before' => 'csrf', 'uses' => 'UserController@postSignup'] );
 
 /*--------------------------------------------------------
 *	Display form for searching through albums/releases
@@ -115,7 +53,7 @@ Route::post('/search', function()
 	$bands_compare = (Input::get('exact_band_title')?"=":'LIKE');
 
 	// Check for genre query
-	$genre = (Input::get('genre') ? Input::get('genre') : '');
+	$genre = (Input::get('genre') ? "%".Input::get('genre')."%" : '');
 
 	// Check for country query (always looking for exact match)
 	$country = (Input::get('country') ? Input::get('country') : '');
@@ -135,12 +73,7 @@ Route::post('/search', function()
 	$order_by = (Input::get('order_by') ? Input::get('order_by'):'avg_rating');
 
 	// Check for review number query
-	if (Input::get('reviews') > 0){
-		$reviews = Input::get('reviews');
-	}
-	else {
-		$reviews = '';
-	}
+	$reviews = Input::get('reviews');
 
 	return View::make('search_results')
 		->with('album',$album)

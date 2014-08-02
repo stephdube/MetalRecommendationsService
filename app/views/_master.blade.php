@@ -8,7 +8,7 @@
 
 <body>
 @if(Session::get('flash_message'))
-        <div class='flash-message'>{{ Session::get('flash_message') }}, {{ Auth::user()->username; }}!</div>
+        <div class='flash-message'>{{ Session::get('flash_message') }}</div>
 @endif
 
 <div id="container">
