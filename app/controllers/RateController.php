@@ -8,26 +8,22 @@ class RateController extends BaseController {
 
 		foreach ($albums_to_remember as $album_id)
 		{
-			$insert[] = array(
-				'user_id' => Auth::id(),
-				'album_id' => $album_id
-			);
+			$album = DB::table('albums')->select('album_title')
+					->where('album_id', $album_id)->get();
 
-		}
+			$title = $album[0]->album_title;
 
-		try{
-			DB::table('bookmarks')->insert($insert);
-		}
-		catch(Exception $e)
-		{
-			echo "Whoops, one of those is already in your bookmarks";
-		}
-
-		echo Pre::render($albums_to_remember);
-
-		echo Auth::id();
+			try{
+				DB::table('bookmarks')->insert(array('user_id' => Auth::id(), 'album_id' => $album_id));
 
 
+				echo $title . " added to list!<br>";
+			}
+			catch(Exception $e)
+			{
+				echo "Whoops, " . $title . " is already in your bookmarks!<br>";
+			}
 
+		}	
 	}
 }
