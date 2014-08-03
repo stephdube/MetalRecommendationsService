@@ -47,4 +47,7 @@ Route::get('/album', function()
 {
 	$album_id = Input::get('id');
 	echo $album_id;
+
 });
+
+Route::post('/remember', ['before' => 'auth', 'uses' => 'RateController@postRemember'] );

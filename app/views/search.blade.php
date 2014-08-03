@@ -1,8 +1,6 @@
 @extends('_master')
 
 @section('content')
-<!--Display search form-->
-
 <form method="POST" action="/search">
 
 Title: <input type="text" name="album_name">
@@ -56,28 +54,5 @@ Show releases with <select name="reviews">
 <input type="submit" value="Search"></br>
 </form>
 
-
-<?php
-
-if(!empty($albums)){
-	//echo Pre::render($albums);
-
-	echo "<ul>";
-	foreach ($albums as $album){
-		echo "<li>";
-		echo "Album: <a href='/album?id=" . $album->album_id ."'>" . $album->album_title . "</a><br>";
-		echo "Band: " . $album->band_name . "<br>";
-		echo "Genre: " . $album->genre . "<br>";
-		echo "Release Type: " . $album->release_type . "<br>";
-		echo "Country: " . $album->country . "<br>";
-		echo "Released: " . $album->release_date . "<br>";
-		echo "Label: " . $album->label . "<br>";
-		echo "Average rating of this album: " . $album->avg_rating . "<br>";
-		echo "Number of ratings: " . $album->review_count . "<br>";
-		echo "</li><br><br>";
-	}
-	echo "</ul>";
-}
-?>
 
 @stop

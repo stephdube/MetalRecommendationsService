@@ -49,7 +49,7 @@ class UserController extends BaseController {
 		}
 
 		# Log in
-		Auth::login($user);
+		Auth::login($user, $remember = true);
 
 		return Redirect::to('/')->with('flash_message', 'Welcome!');
 

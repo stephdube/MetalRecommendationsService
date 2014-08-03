@@ -21,14 +21,6 @@ class SearchController extends BaseController {
 
 	public function postSearch(){
 
-		// queries needed to generate drop-down options in form
-		$countries = DB::table('countries')->select('country')->get();
-		$labels = DB::table('labels')->select('label')
-			->where('count', '>', 75)->get();
-		$release_types = DB::table('albums')->select('release_type')
-			->groupBy('release_type')->get();
-
-
 		// Check for album query
 		$album = (Input::get('album_name') ? Input::get('album_name') : '');
 		// Note if user wants exact matches
@@ -44,7 +36,7 @@ class SearchController extends BaseController {
 		$band = (($bands_compare=='LIKE') ? "%".$band."%" : $band);
 
 		// Check for genre query
-		$genre = (Input::get('genre') ? "%".Input::get('genre')."%" : '');
+		$genre = (Input::get('genre') ? Input::get('genre') : '');
 
 		// Check for country query (always looking for exact match)
 		$country = (Input::get('country') ? Input::get('country') : '');
@@ -79,8 +71,10 @@ class SearchController extends BaseController {
 
 		// Query for albums that match user's search input along with relevant album-data
 		$albums = DB::table('albums')
-			->join('bands', 'bands.band_id', '=', 'albums.band_id') // get band info for album
-			->leftJoin('reviews', 'reviews.album_id', '=', 'albums.album_id') // get review info for album
+			->join('bands', 'bands.band_id', '=', 'albums.band_id') 
+			// get band info for album
+			->leftJoin('reviews', 'reviews.album_id', '=', 'albums.album_id') 
+			// get review info for album
 			->select('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label', DB::raw('AVG(rating) as avg_rating'), DB::raw('count(rating) as review_count'), 
 			// Aggregate data about reviews... This divides possible scores into buckets and counts how many reviews an album has in each bucket, to give a better idea of how the album has been received than a simple average would give.
 				DB::raw('count(CASE WHEN rating <= 10 THEN 1 ELSE null END) as rat10'),
@@ -94,6 +88,7 @@ class SearchController extends BaseController {
 				DB::raw('count(CASE WHEN 80 < rating AND rating <= 90 THEN 1 END) as rat90'),
 				DB::raw('count(CASE WHEN 90 < rating THEN 1 END) as rat100'))
 			// Filter albums user's search queries
+			->take(25)
 			->where(function($query) use ($album, $albums_compare, $band, $bands_compare, $genre, $release_type, $country, $label)
 			{
 				if (!empty($album))
@@ -106,7 +101,7 @@ class SearchController extends BaseController {
 				}
 				if (!empty($genre))
 				{	// user wants to search by genre
-					$query->where('genre', 'LIKE', $genre);
+					$query->where('genre', "LIKE", "%$genre%");
 				}
 				if (!empty($country))
 				{	// user wants to search by country
@@ -121,17 +116,30 @@ class SearchController extends BaseController {
 					$query->where('label', "=", $label);
 				}
 			})
-
 			// Combine data into unique rows based on albums
 			->groupBy('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label')
 			->having('review_count', '>=', $reviews)
 			->orderBy($order_by, $direction)
 			->get();
 
-			return View::make('search')
-				->with('albums',$albums)
-				->with('countries', $countries)
-				->with('labels', $labels)
-				->with('release_types', $release_types);
+			if(empty($albums)){
+				return Redirect::to('search')
+					->with('flash_message', 'Your search did not yield any results')
+					->withInput();
+			}
+			else {
+				// queries needed to generate drop-down options in form
+				$countries = DB::table('countries')->select('country')->get();
+				$labels = DB::table('labels')->select('label')
+					->where('count', '>', 75)->get();
+				$release_types = DB::table('albums')->select('release_type')
+					->groupBy('release_type')->get();
+
+				return View::make('results')
+					->with('albums',$albums)
+					->with('countries', $countries)
+					->with('labels', $labels)
+					->with('release_types', $release_types);
+			}
 	}
 }

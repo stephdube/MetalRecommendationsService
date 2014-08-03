@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>@yield('title', 'Metal Recommendations')</title>
-	<link rel="stylesheet" href="p4style.css" type="text/css">
+	<link rel="stylesheet" href="metal_style.css" type="text/css">
 </head>
 
 <body>
@@ -12,13 +12,21 @@
 @endif
 
 <div id="container">
-	@yield('content')
-</div>
+
+	<div class='loginout'>
+	@if(Auth::check())
+	    <a href='/logout'><button>Log out {{ Auth::user()->username; }}</button></a>
+	@else 
+	    <a href='/login'><button>Log in</button></a>
+		<i>Don't have an account? <a href='/signup'>Sign up</a></i>
+	@endif
+	</div><!--end login/logout-->
+
+@yield('content')
+
+</div><!--end container-->
 
 	@yield('script')
-
-
-</div>
 
 </body>
 <footer></footer>

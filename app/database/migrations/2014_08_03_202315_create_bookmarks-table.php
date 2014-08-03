@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class IndexBandTable extends Migration {
+class CreateBookmarksTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,8 +12,11 @@ class IndexBandTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('bands', function($table){
-			$table->index('band_name');
+		Schema::create('bookmarks', function($table){
+			$table->increments('id');
+			$table->integer('user_id');
+			$table->integer('album_id');
+			$table->timestamps();
 		});
 	}
 
@@ -24,9 +27,6 @@ class IndexBandTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('albums', function($table){
-			$table->dropIndex('bands_band_name_index');
-		});
+		Schema::drop('to_review');
 	}
-
 }
