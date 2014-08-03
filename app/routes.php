@@ -50,4 +50,4 @@ Route::get('/album', function()
 
 });
 
-Route::post('/remember', ['before' => 'auth', 'uses' => 'RateController@postRemember'] );
+Route::post('/remember', ['before' => 'auth', 'uses' => 'BookmarkController@postRemember'] );
