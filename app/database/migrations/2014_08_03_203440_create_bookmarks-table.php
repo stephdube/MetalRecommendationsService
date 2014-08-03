@@ -13,10 +13,9 @@ class CreateBookmarksTable extends Migration {
 	public function up()
 	{
 		Schema::create('bookmarks', function($table){
-			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('album_id');
-			$table->timestamps();
+			$table->primary(array('user_id', 'album_id'));
 		});
 	}
 
@@ -27,6 +26,6 @@ class CreateBookmarksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('to_review');
+		Schema::drop('bookmarks');
 	}
 }
