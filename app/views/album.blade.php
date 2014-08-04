@@ -24,14 +24,33 @@
 	$album = $album[0];
 ?>
 
-	Album: <?php echo $album->album_title ?><br>
+	Release title: <?php echo $album->album_title ?><br>
 	Band: <?php echo $album->band_name ?> <br>
 	Genre: <?php echo $album->genre ?> <br>
-	Release Type: <?php echo $album->release_type ?> <br>
+	Release type: <?php echo $album->release_type ?> <br>
 	Country: <?php echo $album->country ?><br>
-	Released: <?php echo $album->release_date ?><br>
+	Release date: <?php echo $album->release_date ?><br>
 	Label: <?php echo $album->label ?> <br>
 
-	@include('album_stats')
+	<div class="album_stats">@include('album_stats')</div>
 
+<?php
+	$this_bookmark = DB::table('bookmarks')
+		->where('user_id', Auth::id())
+		->where('album_id', $album->album_id)->get();
+?>
+
+<?php if (!empty($this_bookmark)): ?>
+	<form method="POST" action="/remove">
+		Remove this from bookmarks? 
+		<input type="checkbox" name="remove" value="<?= $album->album_id ?>">
+	<input type="submit" value="Remove">
+</form>
+<?php else:?>
+	<form method="POST" action="/remember">
+		Add this to bookmarks? 
+		<input type="checkbox" name="remember[]" value="<?= $album->album_id ?>">
+	<input type="submit" value="Add">
+</form>
+<?php endif;?>
 @stop

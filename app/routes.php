@@ -50,3 +50,5 @@ Route::get('/album', function()
 });
 
 Route::post('/remember', ['before' => 'auth', 'uses' => 'BookmarkController@postRemember'] );
+
+Route::post('/remove', ['before' => 'auth', 'uses' => 'BookmarkController@postRemove'] );

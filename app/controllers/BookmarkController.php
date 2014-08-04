@@ -31,4 +31,30 @@ class BookmarkController extends BaseController {
 		return Redirect::to('/')
 			->with('flash_message', $flash_message);
 	}
+
+	public function postRemove() {
+
+		$album_to_remove = Input::get('remove');
+
+		$album = DB::table('albums')->select('album_title')
+					->where('album_id', $album_to_remove)->get();
+
+		$title = $album[0]->album_title;
+
+		// surround with try/catch just in case user hits refresh before they are redirected
+		try {
+			DB::table('bookmarks')
+				->where('album_id', $album_to_remove)
+				->where('user_id', Auth::id())
+				->delete();
+		} catch(Exception $e){
+			return Redirect::to('/')
+			->with('flash_message', "Something went wrong");
+		}
+
+		$flash_message = $title . " has been removed from your bookmarks";
+
+		return Redirect::to('/')
+			->with('flash_message', $flash_message);
+	}
 }

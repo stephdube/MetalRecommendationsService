@@ -9,19 +9,33 @@
 table, th, td{
 	border:1px solid black;
 	text-align: center;
-	padding:.3em;
 	margin-right:auto;
 	margin-left: auto;
 }
 
-.bar{
-	background-color: black;
-	padding:none;
-	width:5px;
+.chart{
+	border:none;
+	margin:0px;
+	font-size: small;
 }
 
-.first_row{
+.bar{
+	border:1px;
+	background-color: black;
+	padding:none;
+	width:15px;
+	margin:0px;
+}
+
+.band_info_col{
 	text-align: left;
+	padding-left: 1em;
+}
+
+.rating_stats_col{
+	text-align: justify;
+	margin:0px;
+	font-size: small;
 }
 
 .rating {
@@ -32,6 +46,10 @@ table, th, td{
 .rating > span:hover ~ span:before {
    content: "\2605";
    position: absolute;
+}
+
+a:link{
+	text-decoration: none;
 }
 
 

@@ -20,6 +20,10 @@
 	@endif
 </div><!--end login/logout-->
 
+<div class="home">
+	<a href="/">Home</a>
+</div>
+
 <div id="container">
 
 	@yield('content')
