@@ -11,22 +11,23 @@
         <div class='flash-message'>{{ Session::get('flash_message') }}</div>
 @endif
 
-<div id="container">
-
-	<div class='loginout'>
+<div class='loginout'>
 	@if(Auth::check())
 	    <a href='/logout'><button>Log out {{ Auth::user()->username; }}</button></a>
 	@else 
 	    <a href='/login'><button>Log in</button></a>
 		<i>Don't have an account? <a href='/signup'>Sign up</a></i>
 	@endif
-	</div><!--end login/logout-->
+</div><!--end login/logout-->
 
-@yield('content')
+<div id="container">
+
+	@yield('content')
+
 
 </div><!--end container-->
 
-	@yield('script')
+@yield('script')
 
 </body>
 <footer></footer>

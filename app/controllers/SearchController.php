@@ -68,7 +68,6 @@ class SearchController extends BaseController {
 		// Check for review number query
 		$reviews = Input::get('reviews');
 
-
 		// Query for albums that match user's search input along with relevant album-data
 		$albums = DB::table('albums')
 			->join('bands', 'bands.band_id', '=', 'albums.band_id') 

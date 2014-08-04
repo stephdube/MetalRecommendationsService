@@ -1,6 +1,6 @@
 <?php
 
-class RateController extends BaseController {
+class BookmarkController extends BaseController {
 
 	public function postRemember() {
 
@@ -8,6 +8,7 @@ class RateController extends BaseController {
 
 		$flash_message = '';
 
+		// add all the albums checked off to user's bookmark list is possible
 		foreach ($albums_to_remember as $album_id)
 		{
 			$album = DB::table('albums')->select('album_title')

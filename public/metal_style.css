@@ -14,6 +14,12 @@ table, th, td{
 	margin-left: auto;
 }
 
+.bar{
+	background-color: black;
+	padding:none;
+	width:5px;
+}
+
 .first_row{
 	text-align: left;
 }
@@ -27,3 +33,5 @@ table, th, td{
    content: "\2605";
    position: absolute;
 }
+
+

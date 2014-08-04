@@ -45,8 +45,7 @@ Route::post('/search', 'SearchController@postSearch');
 *----------------------------------------------------------------------*/
 Route::get('/album', function()
 {
-	$album_id = Input::get('id');
-	echo $album_id;
+	return View::make('album');
 
 });
 

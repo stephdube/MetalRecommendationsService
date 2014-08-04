@@ -20,7 +20,7 @@
 <?php foreach ($albums as $album): ?>
 	<tr>
 		<td class="first_row">
-			Album: <?php echo $album->album_title ?><br>
+			Album: <a href='/album?id=<?php echo $album->album_id?>'><?php echo $album->album_title ?></a><br>
 			Band: <?php echo $album->band_name ?> <br>
 			Genre: <?php echo $album->genre ?> <br>
 			Release Type: <?php echo $album->release_type ?> <br>
@@ -30,16 +30,7 @@
 		</td>
 
 		<td>
-			0-10: <?php echo $album->rat10 ?> <br>
-			10-20: <?php echo $album->rat20 ?> <br>
-			20-30: <?php echo $album->rat30 ?> <br>
-			30-40: <?php echo $album->rat40 ?> <br>
-			40-50: <?php echo $album->rat50 ?> <br>
-			50-60: <?php echo $album->rat60 ?> <br>
-			60-70: <?php echo $album->rat70 ?> <br>
-			70-80: <?php echo $album->rat80 ?> <br>
-			80-90: <?php echo $album->rat90 ?> <br>
-			90-100: <?php echo $album->rat100 ?> <br>
+			@include('album_stats')
 		</td>
 
 		<td>
