@@ -8,10 +8,10 @@ return array(
 
         'mysql' => array(
             'driver'    => 'mysql',
-            'host'      => 'hostname-goes-here',
-            'database'  => 'database-name-goes-here',
-            'username'  => 'username-goes-here',
-            'password'  => 'password-goes-here',
+            'host'      => 'tunnel.pagodabox.com:3306',
+            'database'  => 'metal',
+            'username'  => 'pT3l069B',
+            'password'  => 'pT3l069B',
         ),
 
     ),

@@ -66,7 +66,8 @@ Route::post('/rate', ['before' => 'auth', 'uses' => 'RateController@postRate'] )
 
 
 
-/* Debugging route
+/* 
+*  Debugging route
 */
 Route::get('/debug', function() {
 
