@@ -2,7 +2,7 @@
 
 return array(
 
-# app/config/local/app.php
+# app/config/production/app.php
 
 	'debug' => true,
 

@@ -16,7 +16,8 @@ class CreateRatingsTable extends Migration {
 			$table->integer('album_id');
 			$table->integer('user_id');
 			$table->integer('rating');
-			$table->date('review_date');
+			$table->timestamp('review_date')
+				->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->primary(array('album_id', 'user_id'));
 		});
 	}

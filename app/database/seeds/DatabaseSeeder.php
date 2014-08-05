@@ -15,3 +15,10 @@ class DatabaseSeeder extends Seeder {
 	}
 
 }
+
+/*
+	LOAD DATA INFILE 'C:/metalData/MAAlbums.csv' INTO TABLE albums
+	FIELDS TERMINATED BY ';;'
+	LINES TERMINATED BY '\r\n';
+
+/*

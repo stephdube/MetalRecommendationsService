@@ -15,6 +15,8 @@ class CreateBookmarksTable extends Migration {
 		Schema::create('bookmarks', function($table){
 			$table->integer('user_id');
 			$table->integer('album_id');
+			$table->timestamp('creation_date')
+				->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->primary(array('user_id', 'album_id'));
 		});
 	}

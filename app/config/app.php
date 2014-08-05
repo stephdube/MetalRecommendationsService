@@ -2,6 +2,8 @@
 
 return array(
 
+# app/config/app.php
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application Debug Mode
