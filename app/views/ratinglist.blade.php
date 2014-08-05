@@ -19,6 +19,14 @@
 				by <?php echo $rating->band_name ?> 
 				(<?php echo $rating->release_date ?>, 
 				<?php echo $rating->label ?>) <br>
-		</li><br>
+			Your rating:<br>
+			<?php for($i=0; $i < ($rating->rating/10); $i++):?>
+                <span class="user_rated">★</span>
+            <?php endfor?>
+            <?php for($j=0; $j < (10 - ($rating->rating/10)); $j++):?>
+               <span class="user_unrated">★</span>
+            <?php endfor?>
+        <br><br>
+        </li>
 		<?php endforeach ?>
 	<?php endif; ?>

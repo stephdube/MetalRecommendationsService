@@ -32,7 +32,16 @@
 <?php endif;?>
 
 <div class="rating_stars">
+<form method="POST" action="/rate">
 	@include('rate_form')
+<input type="hidden" name="album" value="<?=$album->album_id?>">
+<?php if(!empty($this_rating)): ?>
+	<input type="hidden" name="prev_rating" value="<?=$this_rating->rating?>">
+<?php else: ?>
+	<input type="hidden" name="prev_rating" value="none">
+<?php endif; ?>
+<input type="submit" value="Rate">
+</form>
 </div>
 
 
