@@ -8,7 +8,8 @@ class AlbumController extends BaseController {
 
 		$album = DB::table('albums')
 			->join('bands', 'bands.band_id', '=', 'albums.band_id') 
-			->join('reviews', 'reviews.album_id', '=', 'albums.album_id')
+			// has to be leftJoin or it will exclude albums with no reviews
+			->leftJoin('reviews', 'reviews.album_id', '=', 'albums.album_id')
 			->select('albums.album_id', 
 				'albums.album_title', 
 				'bands.band_name', 
@@ -37,19 +38,25 @@ class AlbumController extends BaseController {
 			return Redirect::to('/')
 				->with('flash_message', 'Sorry, no such album');
 		}
-		else {
-			$album = $album[0];
 
-			// incorporate newly acquired data with older data
-			$user_ratings = DB::table('ratings')
-				->select('rating')
-				->where('album_id', $album_id)->get();
+		$album = $album[0];
 
-			// go through new data to calculate new avg and distribution of ratings
-			$total = 0;
+		// Incorporate newly acquired data with older data
+		$user_ratings = DB::table('ratings')
+			->select('rating')
+			->where('album_id', $album->album_id)->get();
+
+		// Check if this album has any reviews to analyze
+		$total_reviews = $album->review_count + sizeof($user_ratings);
+		if($total_reviews != 0){
+
+			// Loop through reviews, track # to find avg, etc.
+			$new_review_sum = 0;
 			foreach($user_ratings as $rating){
-				$total += $rating->rating;
-				// add these ratings to rating-buckets
+
+			$new_review_sum += $rating->rating;
+
+				// add these ratings to the rating category "buckets"
 				switch (true){
 					case ($rating->rating <= 10):
 						$album->rat10++;
@@ -61,16 +68,14 @@ class AlbumController extends BaseController {
 						$album->rat30 ++;
 						break;
 					case ($rating->rating > 30 && $rating->rating <=40):
-						$album->rat40 ++;
-						break;
+						$album->rat40 ++;							break;
 					case ($rating->rating > 40 && $rating->rating <=50):
 						$album->rat50 ++;
 						break;
 					case ($rating->rating > 50 && $rating->rating <=60):
 						$album->rat60 ++;
 						break;
-					case ($rating->rating > 60 && $rating->rating <=70):
-						$album->rat70 ++;
+					case ($rating->rating > 60 && $rating->rating <=70):							$album->rat70 ++;
 						break;
 					case ($rating->rating > 70 && $rating->rating <=80):
 						$album->rat80++;
@@ -83,26 +88,26 @@ class AlbumController extends BaseController {
 						break;
 				}
 			}
-			// calculate new average rating for this album
-			$album->avg_rating = (($album->avg_rating*$album->review_count) + $total) / ($album->review_count + sizeof($user_ratings));
+			// based on new numbers, calculate new average rating for this album
+			$album->avg_rating = (($album->avg_rating*$album->review_count) + $new_review_sum) / $total_reviews;
 
-			// adjust total review count
-			$album->review_count += sizeof($user_ratings);
-
-			$this_bookmark = DB::table('bookmarks')
-				->where('user_id', Auth::id())
-				->where('album_id', $album->album_id)->get();
-
-			$this_rating = DB::table('ratings')
-				->where('user_id', Auth::id())
-				->where('album_id', $album->album_id)->get();
-
-			$this_rating = (!empty($this_rating)) ? $this_rating[0] : $this_rating;
-
-			return View::make('album')
-				->with('album', $album)
-				->with('this_bookmark', $this_bookmark)
-				->with('this_rating', $this_rating);
+			// assign new total to old variable name to pass to View
+			$album->review_count = $total_reviews;
 		}
+			
+		$this_bookmark = DB::table('bookmarks')
+			->where('user_id', Auth::id())
+			->where('album_id', $album->album_id)->get();
+
+		$this_rating = DB::table('ratings')
+			->where('user_id', Auth::id())
+			->where('album_id', $album->album_id)->get();
+
+		$this_rating = (!empty($this_rating)) ? $this_rating[0] : $this_rating;
+
+		return View::make('album')
+			->with('album', $album)
+			->with('this_bookmark', $this_bookmark)
+			->with('this_rating', $this_rating);
 	}
 }

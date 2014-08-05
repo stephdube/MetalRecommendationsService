@@ -49,7 +49,8 @@ Route::get('/random', function(){
 	$albums = DB::table('albums')
 		->select('album_id')->get();
 
-	return Redirect::action('AlbumController@getAlbum', array('id' => $albums[rand(1, sizeof($albums)-1)]->album_id));
+	return Redirect::action('AlbumController@getAlbum', 
+		array('id' => $albums[rand(1, sizeof($albums)-1)]->album_id));
 });
 
 /*----------------------------------------------------------------------
