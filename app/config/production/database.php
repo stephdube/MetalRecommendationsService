@@ -10,7 +10,7 @@ return array(
             'driver'    => 'mysql',
             'host'      => 'tunnel.pagodabox.com:3306',
             'database'  => 'metal',
-            'username'  => 'pT3l069B',
+            'username'  => 'melodie',
             'password'  => 'pT3l069B',
         ),
 
