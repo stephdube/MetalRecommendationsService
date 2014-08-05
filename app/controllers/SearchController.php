@@ -121,24 +121,74 @@ class SearchController extends BaseController {
 			->orderBy($order_by, $direction)
 			->get();
 
+			// query returned nothing
 			if(empty($albums)){
 				return Redirect::to('search')
 					->with('flash_message', 'Sorry, your search did not yield any results')
 					->withInput();
 			}
-			else {
-				// queries needed to generate drop-down options in form
-				$countries = DB::table('countries')->select('country')->get();
-				$labels = DB::table('labels')->select('label')
-					->where('count', '>', 75)->get();
-				$release_types = DB::table('albums')->select('release_type')
-					->groupBy('release_type')->get();
 
+			// query returned a list of albums
+			else {
+				foreach($albums as $album){
+					// incorporate newly acquired data with older data
+					$user_ratings = DB::table('ratings')
+						->select('rating')
+						->where('album_id', $album->album_id)->get();
+
+					$total_reviews = $album->review_count + sizeof($user_ratings);
+					// no point in all this if there are no reviews at all
+					if($total_reviews!=0){
+
+						// calculate new avg and distribution of ratings
+						$new_review_sum = 0;
+						foreach($user_ratings as $rating){
+							// add up all the review-points to get average later
+							$new_review_sum += $rating->rating;
+							// add these ratings to rating-buckets
+							switch (true){
+								case ($rating->rating <= 10):
+									$album->rat10++;
+									break;
+								case ($rating->rating > 10 && $rating->rating <=20):
+									$album->rat20 ++;
+									break;
+								case ($rating->rating > 20 && $rating->rating <=30):
+									$album->rat30 ++;
+									break;
+								case ($rating->rating > 30 && $rating->rating <=40):
+									$album->rat40 ++;
+									break;
+								case ($rating->rating > 40 && $rating->rating <=50):
+									$album->rat50 ++;
+									break;
+								case ($rating->rating > 50 && $rating->rating <=60):
+									$album->rat60 ++;
+									break;
+								case ($rating->rating > 60 && $rating->rating <=70):
+									$album->rat70 ++;
+									break;
+								case ($rating->rating > 70 && $rating->rating <=80):
+									$album->rat80++;
+									break;
+								case ($rating->rating > 80 && $rating->rating <=90):
+									$album->rat90 ++;
+									break;
+								case ($rating->rating > 90 && $rating->rating <=100):
+									$album->rat100 ++;
+									break;
+							}
+						}
+						// calculate new average rating for this album
+						$album->avg_rating = (($album->avg_rating*$album->review_count) + $new_review_sum) / $total_reviews;
+
+						// assign new total to old variable name
+						$album->review_count = $total_reviews;
+					}
+				}
+				
 				return View::make('results')
-					->with('albums',$albums)
-					->with('countries', $countries)
-					->with('labels', $labels)
-					->with('release_types', $release_types);
+					->with('albums',$albums);
 			}
 	}
 }

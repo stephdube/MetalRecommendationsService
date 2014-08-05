@@ -3,7 +3,8 @@
 		$bookmarks = DB::table('albums')
 			->join('bookmarks', 'bookmarks.album_id', '=', 'albums.album_id')
 			->join('bands', 'bands.band_id', '=', 'albums.band_id')
-			->where('user_id', Auth::id())->get();
+			->where('user_id', Auth::id())
+			->orderBy('album_title', 'asc')->get();
 	?>
 
 	<?php // Display bookmarks

@@ -45,6 +45,13 @@ Route::post('/search', 'SearchController@postSearch');
 *----------------------------------------------------------------------*/
 Route::get('/album', ['before' => 'auth', 'uses' =>'AlbumController@getAlbum']);
 
+Route::get('/random', function(){
+	$albums = DB::table('albums')
+		->select('album_id')->get();
+
+	return Redirect::action('AlbumController@getAlbum', array('id' => $albums[rand(1, sizeof($albums)-1)]->album_id));
+});
+
 /*----------------------------------------------------------------------
 * 	Add and remove selected releases to user's Bookmarks
 *----------------------------------------------------------------------*/

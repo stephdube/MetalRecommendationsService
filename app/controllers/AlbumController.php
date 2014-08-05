@@ -8,27 +8,86 @@ class AlbumController extends BaseController {
 
 		$album = DB::table('albums')
 			->join('bands', 'bands.band_id', '=', 'albums.band_id') 
-			->leftJoin('reviews', 'reviews.album_id', '=', 'albums.album_id') 
-			->select('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label', DB::raw('AVG(rating) as avg_rating'), DB::raw('count(rating) as review_count'), DB::raw('count(CASE WHEN rating <= 10 THEN 1 ELSE null END) as rat10'),
-				DB::raw('count(CASE WHEN 10 < rating AND rating <= 20 THEN 1 END) as rat20'),
-				DB::raw('count(CASE WHEN 20 < rating AND rating <= 30 THEN 1 END) as rat30'),
-				DB::raw('count(CASE WHEN 30 < rating AND rating <= 40 THEN 1 END) as rat40'),
-				DB::raw('count(CASE WHEN 40 < rating AND rating <= 50 THEN 1 END) as rat50'),
-				DB::raw('count(CASE WHEN 50 < rating AND rating <= 60 THEN 1 END) as rat60'),
-				DB::raw('count(CASE WHEN 60 < rating AND rating <= 70 THEN 1 END) as rat70'),
-				DB::raw('count(CASE WHEN 70 < rating AND rating <= 80 THEN 1 END) as rat80'),
-				DB::raw('count(CASE WHEN 80 < rating AND rating <= 90 THEN 1 END) as rat90'),
-				DB::raw('count(CASE WHEN 90 < rating THEN 1 END) as rat100'))
+			->join('reviews', 'reviews.album_id', '=', 'albums.album_id')
+			->select('albums.album_id', 
+				'albums.album_title', 
+				'bands.band_name', 
+				'bands.genre', 
+				'albums.release_type', 
+				'bands.country', 
+				'albums.release_date', 
+				'albums.label', 
+				DB::raw('AVG(reviews.rating) as avg_rating'), 
+				DB::raw('count(reviews.rating) as review_count'), 
+				DB::raw('count(CASE WHEN reviews.rating <= 10 THEN 1 ELSE null END) as rat10'),
+				DB::raw('count(CASE WHEN 10 < reviews.rating AND reviews.rating <= 20 THEN 1 END) as rat20'),
+				DB::raw('count(CASE WHEN 20 < reviews.rating AND reviews.rating <= 30 THEN 1 END) as rat30'),
+				DB::raw('count(CASE WHEN 30 < reviews.rating AND reviews.rating <= 40 THEN 1 END) as rat40'),
+				DB::raw('count(CASE WHEN 40 < reviews.rating AND reviews.rating <= 50 THEN 1 END) as rat50'),
+				DB::raw('count(CASE WHEN 50 < reviews.rating AND reviews.rating <= 60 THEN 1 END) as rat60'),
+				DB::raw('count(CASE WHEN 60 < reviews.rating AND reviews.rating <= 70 THEN 1 END) as rat70'),
+				DB::raw('count(CASE WHEN 70 < reviews.rating AND reviews.rating <= 80 THEN 1 END) as rat80'),
+				DB::raw('count(CASE WHEN 80 < reviews.rating AND reviews.rating <= 90 THEN 1 END) as rat90'),
+				DB::raw('count(CASE WHEN 90 < reviews.rating THEN 1 END) as rat100'))
 			->groupBy('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label')
 			->where('albums.album_id', $album_id)->get();
 
+		// check if query returned anything before moving forward
 		if (empty($album)){
-			//return Redirect::to('/')
-				//->with('flash_message', 'Sorry, no such album');
-			echo "idk " . $album_id . " " . Pre::render($album);
+			return Redirect::to('/')
+				->with('flash_message', 'Sorry, no such album');
 		}
 		else {
 			$album = $album[0];
+
+			// incorporate newly acquired data with older data
+			$user_ratings = DB::table('ratings')
+				->select('rating')
+				->where('album_id', $album_id)->get();
+
+			// go through new data to calculate new avg and distribution of ratings
+			$total = 0;
+			foreach($user_ratings as $rating){
+				$total += $rating->rating;
+				// add these ratings to rating-buckets
+				switch (true){
+					case ($rating->rating <= 10):
+						$album->rat10++;
+						break;
+					case ($rating->rating > 10 && $rating->rating <=20):
+						$album->rat20 ++;
+						break;
+					case ($rating->rating > 20 && $rating->rating <=30):
+						$album->rat30 ++;
+						break;
+					case ($rating->rating > 30 && $rating->rating <=40):
+						$album->rat40 ++;
+						break;
+					case ($rating->rating > 40 && $rating->rating <=50):
+						$album->rat50 ++;
+						break;
+					case ($rating->rating > 50 && $rating->rating <=60):
+						$album->rat60 ++;
+						break;
+					case ($rating->rating > 60 && $rating->rating <=70):
+						$album->rat70 ++;
+						break;
+					case ($rating->rating > 70 && $rating->rating <=80):
+						$album->rat80++;
+						break;
+					case ($rating->rating > 80 && $rating->rating <=90):
+						$album->rat90 ++;
+						break;
+					case ($rating->rating > 90 && $rating->rating <=100):
+						$album->rat100 ++;
+						break;
+				}
+			}
+			// calculate new average rating for this album
+			$album->avg_rating = (($album->avg_rating*$album->review_count) + $total) / ($album->review_count + sizeof($user_ratings));
+
+			// adjust total review count
+			$album->review_count += sizeof($user_ratings);
 
 			$this_bookmark = DB::table('bookmarks')
 				->where('user_id', Auth::id())
@@ -38,7 +97,7 @@ class AlbumController extends BaseController {
 				->where('user_id', Auth::id())
 				->where('album_id', $album->album_id)->get();
 
-			$this_rating = $this_rating[0];
+			$this_rating = (!empty($this_rating)) ? $this_rating[0] : $this_rating;
 
 			return View::make('album')
 				->with('album', $album)

@@ -1,6 +1,6 @@
 <?php 
-		$rating_categories = array($album->rat10, $album->rat20, $album->rat30, $album->rat40, $album->rat50, $album->rat60, $album->rat70, $album->rat80, $album->rat90, $album->rat100);
-	?>
+	$rating_categories = array($album->rat10, $album->rat20, $album->rat30, $album->rat40, $album->rat50, $album->rat60, $album->rat70, $album->rat80, $album->rat90, $album->rat100);
+?>
 
 <table class="chart">
 	<?php for($j=sizeof($rating_categories) - 1; $j >= 0; $j--): ?>

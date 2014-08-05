@@ -46,11 +46,21 @@
 
 	@if(Auth::check())
 		<td>
-			<div class="rating">
-			<?php for($i = 0; $i<=100; $i+=10): ?>
-				<span><a href="/rate?id=<?=$album->album_id?>">☆</a></span>
-			<?php endfor; ?>
-			</div>
+			<?php 
+			// check if User has rated this album
+			$this_rating = DB::table('ratings')
+				->where('user_id', Auth::id())
+				->where('album_id', $album->album_id)->get();
+			if (!empty($this_rating)){
+				for($i=0; $i < ($this_rating[0]->rating/10); $i++){
+					echo "<span style='color:gold'>★</span>";
+				}
+				for($j=0; $j < (10 - ($this_rating[0]->rating/10)); $j++){
+					echo "★";
+				}
+			}
+			
+			?>
 		</td>
 
 		<td>

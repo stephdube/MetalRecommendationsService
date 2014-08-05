@@ -14,12 +14,7 @@
 <div class="menu">
 	<a href="/">Home</a> |
 	<a href="/search">Search for an album</a> |
-<?php
-	$albums = DB::table('albums')
-		->select('album_id')->get();
-?>
-	<a href="/album?id=<?=$albums[rand(1, sizeof($albums)-1)]->album_id
-	;?>">Random album</a>
+	<a href="/random">Random album</a>
 </div>
 
 <div id="container">
