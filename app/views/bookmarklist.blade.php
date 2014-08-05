@@ -10,7 +10,11 @@
 		foreach($bookmarks as $bookmark): ?>
 
 		<li>
-			<a href="/album?id=<?php echo $bookmark->album_id?>"><i><?php echo $bookmark->album_title ?></i> by <?php echo $bookmark->band_name ?></a> (<?php echo $bookmark->release_date ?>, <?php echo $bookmark->label ?>) <br>
+			<a href="/album?id=<?php echo $bookmark->album_id?>"><i>
+				<?php echo $bookmark->album_title ?></i></a> 
+				by <?php echo $bookmark->band_name ?> 
+				(<?php echo $bookmark->release_date ?>, 
+				<?php echo $bookmark->label ?>) <br>
 		</li><br>
 	<?php endforeach ?>
 

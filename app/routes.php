@@ -43,12 +43,16 @@ Route::post('/search', 'SearchController@postSearch');
 /*----------------------------------------------------------------------
 * 	Display information about selected release and enable user to rate it
 *----------------------------------------------------------------------*/
-Route::get('/album', function()
-{
-	return View::make('album');
+Route::get('/album', ['before' => 'auth', 'uses' =>'AlbumController@getAlbum']);
 
-});
-
+/*----------------------------------------------------------------------
+* 	Add and remove selected releases to user's Bookmarks
+*----------------------------------------------------------------------*/
 Route::post('/remember', ['before' => 'auth', 'uses' => 'BookmarkController@postRemember'] );
 
 Route::post('/remove', ['before' => 'auth', 'uses' => 'BookmarkController@postRemove'] );
+
+/*----------------------------------------------------------------------
+* 	Add user's ratings
+*----------------------------------------------------------------------*/
+Route::post('/rate', ['before' => 'auth', 'uses' => 'RateController@postRate'] );

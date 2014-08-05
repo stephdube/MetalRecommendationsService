@@ -8,7 +8,7 @@ class BookmarkController extends BaseController {
 
 		$flash_message = '';
 
-		// add all the albums checked off to user's bookmark list is possible
+		// add all the albums checked off to user's bookmark list if possible
 		foreach ($albums_to_remember as $album_id)
 		{
 			$album = DB::table('albums')->select('album_title')

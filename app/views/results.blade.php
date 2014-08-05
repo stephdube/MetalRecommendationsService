@@ -2,6 +2,8 @@
 
 @section('content')
 
+@include('login_prompter')
+
 @if(Auth::check())
 <form method="POST" action="/remember">
 @endif
@@ -20,7 +22,8 @@
 <?php foreach ($albums as $album): ?>
 	<tr>
 		<td class="band_info_col">
-			Album: <a href='/album?id=<?php echo $album->album_id?>'><?php echo $album->album_title ?></a><br>
+			Album: <a href='/album?id=<?php echo $album->album_id?>'>
+				<?php echo $album->album_title ?></a><br>
 			Band: <?php echo $album->band_name ?> <br>
 			Genre: <?php echo $album->genre ?> <br>
 			Release Type: <?php echo $album->release_type ?> <br>

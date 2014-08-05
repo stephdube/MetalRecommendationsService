@@ -123,7 +123,7 @@ class SearchController extends BaseController {
 
 			if(empty($albums)){
 				return Redirect::to('search')
-					->with('flash_message', 'Your search did not yield any results')
+					->with('flash_message', 'Sorry, your search did not yield any results')
 					->withInput();
 			}
 			else {

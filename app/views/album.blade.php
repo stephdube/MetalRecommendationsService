@@ -2,28 +2,6 @@
 
 @section('content')
 
-<?php
-	$album_id = Input::get('id');
-
-	$album = DB::table('albums')
-			->join('bands', 'bands.band_id', '=', 'albums.band_id') 
-			->join('reviews', 'reviews.album_id', '=', 'albums.album_id') 
-			->select('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label', DB::raw('AVG(rating) as avg_rating'), DB::raw('count(rating) as review_count'), DB::raw('count(CASE WHEN rating <= 10 THEN 1 ELSE null END) as rat10'),
-				DB::raw('count(CASE WHEN 10 < rating AND rating <= 20 THEN 1 END) as rat20'),
-				DB::raw('count(CASE WHEN 20 < rating AND rating <= 30 THEN 1 END) as rat30'),
-				DB::raw('count(CASE WHEN 30 < rating AND rating <= 40 THEN 1 END) as rat40'),
-				DB::raw('count(CASE WHEN 40 < rating AND rating <= 50 THEN 1 END) as rat50'),
-				DB::raw('count(CASE WHEN 50 < rating AND rating <= 60 THEN 1 END) as rat60'),
-				DB::raw('count(CASE WHEN 60 < rating AND rating <= 70 THEN 1 END) as rat70'),
-				DB::raw('count(CASE WHEN 70 < rating AND rating <= 80 THEN 1 END) as rat80'),
-				DB::raw('count(CASE WHEN 80 < rating AND rating <= 90 THEN 1 END) as rat90'),
-				DB::raw('count(CASE WHEN 90 < rating THEN 1 END) as rat100'))
-			->groupBy('albums.album_id', 'albums.album_title', 'bands.band_name', 'bands.genre', 'albums.release_type', 'bands.country', 'albums.release_date', 'albums.label')
-			->where('albums.album_id', $album_id)->get();
-
-	$album = $album[0];
-?>
-
 	Release title: <?php echo $album->album_title ?><br>
 	Band: <?php echo $album->band_name ?> <br>
 	Genre: <?php echo $album->genre ?> <br>
@@ -34,23 +12,46 @@
 
 	<div class="album_stats">@include('album_stats')</div>
 
-<?php
-	$this_bookmark = DB::table('bookmarks')
-		->where('user_id', Auth::id())
-		->where('album_id', $album->album_id)->get();
-?>
-
 <?php if (!empty($this_bookmark)): ?>
 	<form method="POST" action="/remove">
 		Remove this from bookmarks? 
-		<input type="checkbox" name="remove" value="<?= $album->album_id ?>">
-	<input type="submit" value="Remove">
-</form>
+		<input type="hidden" name="remove" value="<?= $album->album_id ?>">
+		<input type="submit" value="Remove">
+	</form>
 <?php else:?>
 	<form method="POST" action="/remember">
 		Add this to bookmarks? 
-		<input type="checkbox" name="remember[]" value="<?= $album->album_id ?>">
-	<input type="submit" value="Add">
-</form>
+		<input type="hidden" name="remember[]" value="<?= $album->album_id ?>">
+		<input type="submit" value="Add">
+	</form>
 <?php endif;?>
+
+<?php if (!empty($this_rating)): ?>
+	Your gave this album a rating of <?php echo $this_rating->rating; ?>/100.<br>
+	Change your vote?<br><br>
+<?php endif; ?>
+
+	<form method="POST" action="/rate">
+	<fieldset class="rating">
+    <legend>Please rate:</legend>
+    <input type="radio" id="star10" name="rating" value="100" /><label for="star10">10 stars</label>
+    <input type="radio" id="star9" name="rating" value="90" /><label for="star9">9 stars</label>
+    <input type="radio" id="star8" name="rating" value="80" /><label for="star8">8 stars</label>
+    <input type="radio" id="star7" name="rating" value="70" /><label for="star7">7 stars</label>
+    <input type="radio" id="star6" name="rating" value="60" /><label for="star6">6 stars</label>
+    <input type="radio" id="star5" name="rating" value="50" /><label for="star5">5 stars</label>
+    <input type="radio" id="star4" name="rating" value="40" /><label for="star4">4 stars</label>
+    <input type="radio" id="star3" name="rating" value="30" /><label for="star3">3 stars</label>
+    <input type="radio" id="star2" name="rating" value="20" /><label for="star2">2 stars</label>
+    <input type="radio" id="star1" name="rating" value="10" /><label for="star1">1 star</label>
+</fieldset><br>
+<input type="hidden" name="album" value="<?=$album->album_id?>">
+<?php if(!empty($this_rating)): ?>
+	<input type="hidden" name="prev_rating" value="<?=$this_rating->rating?>">
+<?php else: ?>
+	<input type="hidden" name="prev_rating" value="none">
+<?php endif; ?>
+<input type="submit" value="Rate">
+</form>
+
 @stop
