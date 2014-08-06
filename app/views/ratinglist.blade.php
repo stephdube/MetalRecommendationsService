@@ -1,3 +1,4 @@
+<div class="user_rating_list">
 <ul id="ratings"><h4>My Ratings</h4>
 	<?php // Get all user's ratings
 		$ratings = DB::table('albums')
@@ -12,7 +13,6 @@
 	
 	<?php else: ?>
 		<?php foreach($ratings as $rating): ?>
-
 		<li>
 			<a href="/album?id=<?php echo $rating->album_id?>"><i>
 				<?php echo $rating->album_title ?></i></a> 
@@ -29,4 +29,7 @@
         <br><br>
         </li>
 		<?php endforeach ?>
+<div><!-- end user-rating-list section-->
+		{{-- If the user has submitted ratings, display suggestions for more --}}
+		@include('suggestions')
 	<?php endif; ?>

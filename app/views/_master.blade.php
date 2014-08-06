@@ -14,7 +14,7 @@
 <div class="menu">
 	<a href="/">Home</a> |
 	<a href="/search">Search for an album</a> |
-	<a href="/random">Random album</a>
+	<a href="/album?id=random">Random album</a>
 </div>
 
 <div id="container">

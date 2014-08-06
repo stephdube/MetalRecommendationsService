@@ -6,6 +6,16 @@ class AlbumController extends BaseController {
 
 		$album_id = Input::get('id');
 
+		// randomized album search
+		if($album_id = "random")
+		{
+			$albums = DB::table('albums')
+				->select('album_id')->get();
+
+			$album_id = $albums[rand(1, sizeof($albums)-1)]->album_id;
+		}
+
+
 		$album = DB::table('albums')
 			->join('bands', 'bands.band_id', '=', 'albums.band_id') 
 			// has to be leftJoin or it will exclude albums with no reviews
