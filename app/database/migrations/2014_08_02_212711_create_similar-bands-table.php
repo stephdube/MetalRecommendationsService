@@ -13,9 +13,10 @@ class CreateSimilarBandsTable extends Migration {
 	public function up()
 	{
 		Schema::create('similar_bands', function($table){
-			$table->integer('band_1');
-			$table->integer('band_2');
+			$table->bigInteger('band_1');
+			$table->bigInteger('band_2');
 			$table->integer('score');
+			$table->primary(array('band_1', 'band_2'));
 		});
 	}
 

@@ -13,7 +13,7 @@ class CreateCountriesTable extends Migration {
 	public function up()
 	{
 		Schema::create('countries', function($table){
-			$table->integer('label_id');
+			$table->integer('country_id');
 			$table->string('country');
 			$table->primary('country');
 		});
