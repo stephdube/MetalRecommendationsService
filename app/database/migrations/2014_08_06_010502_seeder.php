@@ -12,7 +12,7 @@ class Seeder extends Migration {
 	 */
 	public function up()
 	{
-				// Import data for Albums table
+		// Import data for Albums table
 		DB::connection()->getpdo()->exec('LOAD DATA INFILE "C:/MAMP/htdocs/p4/metalData/MAAlbums.csv" INTO TABLE albums FIELDS TERMINATED BY ";;" LINES TERMINATED BY "\r\n"');
 		DB::table('albums')->where('album_id', '=', 0)
 			->update(array('album_id'=>1));
