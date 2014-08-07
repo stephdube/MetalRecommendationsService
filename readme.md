@@ -1,8 +1,10 @@
 ## Metal Ratings and Recommendations
 
 
-
 Or, P4 for DWA-15
+
+Live site URL:
+http://meta-metallurgy.rhcloud.com/
 
 Things that still need to be done:
 - Make the CSS responsive so it fits on phones but still looks nice on web browsers.
