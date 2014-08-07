@@ -5,12 +5,16 @@ class AlbumController extends BaseController {
 	public function getAlbum() {
 
 		// randomized album search
-		if(Input::get('id')== "random")
+		if(Input::get('id') == "random")
 		{
-			$albums = DB::table('albums')
-				->select('album_id')->get();
+			$selection_size = 1000;
 
-			$album_id = $albums[rand(1, sizeof($albums)-1)]->album_id;
+			$albums = DB::table('albums')
+				->select('album_id')->take($selection_size)
+				->get();
+	
+			$album_id = $albums[rand(1, $selection_size)]->album_id;
+
 		}
 		else {
 			$album_id = Input::get('id');
