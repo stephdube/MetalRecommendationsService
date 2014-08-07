@@ -2,6 +2,5 @@
 
 @section('content')
 
-	About
-	
+	Welcome. This is just a rough draft..... 
 @stop
