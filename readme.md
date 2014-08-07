@@ -16,4 +16,5 @@ Things that still need to be done:
 - Add links to search popular streaming sites for each album.
 - Add links back to the Encyclopedia Metallum's entry for each album/band.
 - Javascript authentication-checking, Javascript search-result re-ordering on-click
+- Emails for users to reset password
 - Etc

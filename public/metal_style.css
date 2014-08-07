@@ -10,8 +10,8 @@ a:link, a:visited{
 
 #container{
     margin-bottom:2em;
-    float:left;
-    width:100%;
+    margin-left:auto;
+    margin-right:auto;
     background-color:#CBC6C6;
     color:#656363;
     border-style:solid;
@@ -20,8 +20,7 @@ a:link, a:visited{
 }
 
 #content{
-    padding:.5em;
-    padding-left:1em;
+    padding:1em;
 }
 
 .header{
@@ -35,14 +34,15 @@ a:link, a:visited{
 }
 
 .menu{
-    background-color:white;
+    background-color:#3A3936;
     color:#5E1A1A;
 }
 
 .bookmarklist, .ratinglist, .suggestions{
     box-shadow: 3px 1px 3px 1px inset;
     padding:1em;
-    background-color: white;
+    background-color:#3A3936;
+    color:#8B8484;
 }
 
 #search_form{
@@ -50,6 +50,8 @@ a:link, a:visited{
     margin-right:auto;
     margin-left: auto;
     font-weight: bold;
+    padding-left: 15%;
+    padding-right: 15%;
 }
 #search{
     background-color: white;
@@ -57,38 +59,92 @@ a:link, a:visited{
     padding:1em;
 }
 
-#album_list, #album_list th, #album_list td{
+.album_list{
+    box-shadow:10px 10px 10px black;
+    padding-top:1em;
+    padding-bottom:1.7em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+.album_list, .album_list tr{
     border:1px solid black;
+    background-color: #3A3936;
+    color:white;
     text-align: center;
     margin-right:auto;
     margin-left: auto;
 }
 
+.album_list th{
+    background-color: #8B8484;
+}
+
+.album_list caption{
+    color:#3A3936;
+}
+.album_list .band_info_col{
+    text-align: left;
+}
+
+.album_list a:link, #album_list a:visited{
+    color:#CBC6C6;
+}
+
+/* The table that displays for the rating distribution */
 .chart{
     border:none;
     margin:0px;
-    font-size: small;
+    font-size:small;
+}
+
+.chart tr{
+    border:1px solid black;
+}
+.chart td{
+    border:none;
+    text-align: left;
 }
 
 /* The blocks that display for each review in the rating distributions chart*/
 .bar{
-    background-color: black;
-    padding:none;
+    background-color: :#A1D46B;
+    color:#89BC4B;
     width:15px;
     margin:0px;
+    text-align: left;
 }
 
-#album_list .band_info_col{
-    text-align: left;
-    padding-left: 1em;
+.starlist {
+  white-space: nowrap;
+  padding-left: 0;
 }
+
+.starlist, .starlist li {
+  list-style: none;
+  display: inline;
+}
+
+.about{
+    padding-left:5%;
+    padding-right:5%;
+    background-color: white;
+    box-shadow: 3px 1px 3px 1px inset;
+    padding:1em;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
 
 /* links */
 #container a:link{
-    color:#5E1A1A;
+    font-weight: bold;
+    color:#CBC6C6;
+    text-shadow:2px 2px #550000;
 }
 #container a:visited{
-    color:#5E1A1A;
+    color:#CBC6C6;
+    text-shadow:2px 2px #550000;
 }
 a:hover{
     letter-spacing:5px;

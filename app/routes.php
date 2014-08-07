@@ -37,7 +37,8 @@ Route::post('/search', 'SearchController@postSearch');
 Route::get('/band', 'SearchController@postSearch');
 
 /*----------------------------------------------------------------------
-* 	Display information about selected release and enable user to rate it
+* 	Display information about selected release and enable user to rate it.
+* 	Redirect guests away from this page.
 *----------------------------------------------------------------------*/
 Route::get('/album', ['before' => 'auth', 'uses' =>'AlbumController@getAlbum']);
 

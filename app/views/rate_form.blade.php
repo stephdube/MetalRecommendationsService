@@ -6,7 +6,7 @@
 
 
 	<fieldset class="rating">
-    <legend>Please rate:</legend>
+    <legend>Rate:</legend>
 
     <input type="radio" id="star10" name="rating" value="100" /><label for="star10">10 stars</label>
     <input type="radio" id="star9" name="rating" value="90" /><label for="star9">9 stars</label>
