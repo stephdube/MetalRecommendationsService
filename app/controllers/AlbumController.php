@@ -4,15 +4,16 @@ class AlbumController extends BaseController {
 
 	public function getAlbum() {
 
-		$album_id = Input::get('id');
-
 		// randomized album search
-		if($album_id = "random")
+		if(Input::get('id')== "random")
 		{
 			$albums = DB::table('albums')
 				->select('album_id')->get();
 
 			$album_id = $albums[rand(1, sizeof($albums)-1)]->album_id;
+		}
+		else {
+			$album_id = Input::get('id');
 		}
 
 
@@ -27,7 +28,8 @@ class AlbumController extends BaseController {
 				'albums.release_type', 
 				'bands.country', 
 				'albums.release_date', 
-				'albums.label', 
+				'albums.label',
+				'bands.band_id',
 				DB::raw('AVG(reviews.rating) as avg_rating'), 
 				DB::raw('count(reviews.rating) as review_count'), 
 				DB::raw('count(CASE WHEN reviews.rating <= 10 THEN 1 ELSE null END) as rat10'),

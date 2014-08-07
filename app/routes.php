@@ -6,39 +6,35 @@ Route::get('/', function(){
 );
 
 /*--------------------------------------------------------
-*	Generate form for users to log in
+*	Generate and process form for users to log in
 *---------------------------------------------------------*/
 Route::get('/login', 'UserController@getLogin');
 
-/*--------------------------------------------------------
-*	Process form to log users in
-*---------------------------------------------------------*/
-Route::post('/login', ['before' => 'csrf', 'uses' => 'UserController@postLogin'] );
+Route::post('/login', ['before' => 'csrf', 'uses' => 'UserController@postLogin']);
 
 /*--------------------------------------------------------
 *	Log users out
 *---------------------------------------------------------*/
-Route::get('/logout', ['before' => 'auth', 'uses' => 'UserController@getLogout'] );
+Route::get('/logout', ['before' => 'auth', 'uses' => 'UserController@getLogout']);
 
 /*--------------------------------------------------------
-*	Generate form for users to create account
+*	Generate and process form for users to create account
 *---------------------------------------------------------*/
 Route::get('/signup', 'UserController@getSignup');
 
-/*--------------------------------------------------------
-*	Process form for users to create account
-*---------------------------------------------------------*/
-Route::post('/signup', ['before' => 'csrf', 'uses' => 'UserController@postSignup'] );
+Route::post('/signup', ['before' => 'csrf', 'uses' => 'UserController@postSignup']);
 
 /*--------------------------------------------------------
-*	Display form for searching through albums/releases
+*	Display and process form for searching through albums/releases
 *---------------------------------------------------------*/
 Route::get('/search', 'SearchController@getSearch');
 
-/*--------------------------------------------------------
-*	Process form and search through albums/releases
-*---------------------------------------------------------*/
 Route::post('/search', 'SearchController@postSearch');
+
+/*--------------------------------------------------------
+*	Display all albums for a specified band
+*---------------------------------------------------------*/
+Route::get('/band', 'SearchController@postSearch');
 
 /*----------------------------------------------------------------------
 * 	Display information about selected release and enable user to rate it
@@ -50,11 +46,13 @@ Route::get('/album', ['before' => 'auth', 'uses' =>'AlbumController@getAlbum']);
 *----------------------------------------------------------------------*/
 Route::post('/remember', ['before' => 'auth', 'uses' => 'BookmarkController@postRemember'] );
 
-Route::post('/remove', ['before' => 'auth', 'uses' => 'BookmarkController@postRemove'] );
+Route::post('/remove', ['before' => 'auth', 'uses' => 'BookmarkController@postRemove']);
 
 /*----------------------------------------------------------------------
-* 	Add user's ratings
+* 	Add and update user's Ratings
 *----------------------------------------------------------------------*/
 Route::post('/rate', ['before' => 'auth', 'uses' => 'RateController@postRate'] );
 
-
+Route::get('/about', function(){
+	return View::make('about');
+});

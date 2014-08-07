@@ -1,5 +1,5 @@
-<div class="user_rating_list">
-<ul id="ratings"><h4>My Ratings</h4>
+<div class="ratinglist">
+<ul id="ratings"><h2>Your Ratings</h2>
 	<?php // Get all user's ratings
 		$ratings = DB::table('albums')
 			->join('ratings', 'ratings.album_id', '=', 'albums.album_id')
@@ -29,7 +29,8 @@
         <br><br>
         </li>
 		<?php endforeach ?>
-<div><!-- end user-rating-list section-->
-		{{-- If the user has submitted ratings, display suggestions for more --}}
-		@include('suggestions')
+	</ul>
+</div>
+	{{-- If the user has submitted ratings, display suggestions for more --}}
+		<div class="suggestions">@include('suggestions')</div>
 	<?php endif; ?>

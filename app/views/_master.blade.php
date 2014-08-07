@@ -11,20 +11,27 @@
         <div class='flash-message'>{{ Session::get('flash_message') }}</div>
 @endif
 
-<div class="menu">
-	<a href="/">Home</a> |
-	<a href="/search">Search for an album</a> |
-	<a href="/album?id=random">Random album</a>
-</div>
-
 <div id="container">
+	<div class="header">
+		<h1>Metal Ratings & Recommendations</h1>
+		<div class="menu">
+			<a href="/about">About</a> |
+			<a href="/search">Search for an album</a> |
+			<a href="/album?id=random">Random album</a> | 
+			@if(Auth::check())
+				<a href="/"><?=Auth::user()->username?></a>
+			@endif
+		</div>
+	</div>
 
-	@yield('content')
-
-
+	<div id="content">
+		@yield('content')
+	</div>
 </div><!--end container-->
 
-@yield('script')
+<div class='loginout'>
+	@include('login_prompter')
+</div>
 
 </body>
 <footer></footer>

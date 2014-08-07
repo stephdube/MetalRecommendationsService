@@ -1,44 +1,104 @@
-#container{
-	padding:1em;
- 	margin-top:10px;
- 	margin-bottom:10px;
-	margin-right:auto;
-	margin-left: auto;
+body{
+    background-color:#3C3B38;
+    color:#CBC6C6;
 }
 
-table, th, td{
-	border:1px solid black;
-	text-align: center;
-	margin-right:auto;
-	margin-left: auto;
+a:link, a:visited{
+    color:white;
+    text-decoration: none;
+}
+
+#container{
+    margin-bottom:2em;
+    float:left;
+    width:100%;
+    background-color:#CBC6C6;
+    color:#656363;
+    border-style:solid;
+    box-shadow:10px 10px 50px black;
+    overflow: hidden;
+}
+
+#content{
+    padding:.5em;
+    padding-left:1em;
+}
+
+.header{
+    text-align: center;
+    font-family:Verdana;
+    font-size:large;
+    letter-spacing:5px;
+    background-color:#8B8484;
+    color:white;
+    border-style:solid;
+}
+
+.menu{
+    background-color:white;
+    color:#5E1A1A;
+}
+
+.bookmarklist, .ratinglist, .suggestions{
+    box-shadow: 3px 1px 3px 1px inset;
+    padding:1em;
+    background-color: white;
+}
+
+#search_form{
+    padding:2em;
+    margin-right:auto;
+    margin-left: auto;
+    font-weight: bold;
+}
+#search{
+    background-color: white;
+    box-shadow: 3px 1px 3px 1px inset;
+    padding:1em;
+}
+
+#album_list, #album_list th, #album_list td{
+    border:1px solid black;
+    text-align: center;
+    margin-right:auto;
+    margin-left: auto;
 }
 
 .chart{
-	border:none;
-	margin:0px;
-	font-size: small;
+    border:none;
+    margin:0px;
+    font-size: small;
 }
 
+/* The blocks that display for each review in the rating distributions chart*/
 .bar{
-	border:1px;
-	background-color: black;
-	padding:none;
-	width:15px;
-	margin:0px;
+    background-color: black;
+    padding:none;
+    width:15px;
+    margin:0px;
 }
 
-.band_info_col{
-	text-align: left;
-	padding-left: 1em;
+#album_list .band_info_col{
+    text-align: left;
+    padding-left: 1em;
+}
+
+/* links */
+#container a:link{
+    color:#5E1A1A;
+}
+#container a:visited{
+    color:#5E1A1A;
+}
+a:hover{
+    letter-spacing:5px;
+}
+#container a:active{
 }
 
 
-a:link{
-	text-decoration: none;
-}
-
-
-/* Based on Lea Verou's stars as radio buttons example: http://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/
+/* Based on Lea Verou's stars as radio buttons example: 
+* http://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/
 */
 
 .rating {

@@ -2,11 +2,10 @@
 
 @section('content')
 
-	@include('login_prompter')
-
 	@if(Auth::check())
 		@include('bookmarklist')
 		@include('ratinglist')
+		{{-- if there are 'suggestions', they come next --}}
 	@endif
 
 @stop

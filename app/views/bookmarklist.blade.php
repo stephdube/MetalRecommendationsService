@@ -1,4 +1,5 @@
-<ul id="bookmarks"><h4>My Bookmarks</h4>
+<div class="bookmarklist">
+<ul id="bookmarks"><h2>Your Bookmarks</h2>
 	<?php // Get all user's bookmarks
 		$bookmarks = DB::table('albums')
 			->join('bookmarks', 'bookmarks.album_id', '=', 'albums.album_id')
@@ -22,5 +23,5 @@
 	<?php if(empty($bookmarks)): ?>
 		You have not bookmarked any albums for review.
 	<?php endif; ?>
-
 </ul>
+</div>
