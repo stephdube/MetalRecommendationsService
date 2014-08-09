@@ -13,8 +13,8 @@
 	<p>Ideally this site will help you discover that masterpiece NWOBHM album from the 80s which has been languishing in obscurity but is exactly up your alley.</p>
 
 	<ul>
-		<li>*<a href="http://www.metal-archives.com/">Encyclopedia Metallum</a></li>
-		<li>**<a href="http://www.furia.com/em/">Empath</a> <a href="http://www.furia.com/page.cgi?type=misc">(with intro here)</a></li>
+		<li>*<a href="http://www.metal-archives.com/" target="_blank">Encyclopedia Metallum</a></li>
+		<li>**<a href="http://www.furia.com/em/" target="_blank">Empath</a> <a href="http://www.furia.com/page.cgi?type=misc">(with intro here)</a></li>
 	</ul>
 
 	<p>(If you are not from DWA-15 but are in fact Hellblazer or Glenn McDonald or anyone else who just wandered in, please note that this is still very much a rough draft, laying down the skeleton (no fancy taste-profile algorithm or data visualizations yet) and will only be live in this manifestation for a few days.)</p>
