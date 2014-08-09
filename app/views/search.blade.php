@@ -16,7 +16,7 @@
 	</tr>
 	<tr>
 		<td>Genre:</td>
-		<td?<input type="text" name="genre"></td>
+		<td><input type="text" name="genre"></td>
 	</tr>
 	<tr>
 		<td>Country:</td>

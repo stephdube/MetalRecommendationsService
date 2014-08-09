@@ -43,6 +43,38 @@
 <?php endif;?>
 	<tr>
 		<td></td>
+		<td colspan=2 class="rating_stats_col">
+			<form method="POST" action="/rate">
+				@include('rate_form')
+				<input type="hidden" name="album" value="<?=$album->album_id?>">
+				<?php if(!empty($this_rating)): ?>
+					<input type="hidden" name="prev_rating" value="<?=$this_rating->rating?>">
+				<?php else: ?>
+					<input type="hidden" name="prev_rating" value="none">
+				<?php endif; ?>
+				<input type="submit" value="Submit">
+			</form>
+		</td>
+	</tr>
+	<tr class="rating_stats_col">
+		<td class="rating_stats_col"></td>
+		<td class="rating_stats_col">
+			Search for this album:<br>
+			<a href="http://youtube.com/results?search_query=<?=$album->album_title ." " . $album->band_name;?>"
+				target="_blank">Youtube</a> | 
+			<a href="http://grooveshark.com/#!/search/album?q=<?=$album->album_title . " " . $album->band_name?>" target="_blank">Grooveshark</a> | 
+			<a href="http://www.amazon.com/s/url=search-alias%3Daps&field-keywords=<?=
+			$album->album_title . " " . $album->band_name?>" target="_blank">Amazon</a>
+		</td>
+	</tr>
+	<tr class="rating_stats_col">
+		<td class="rating_stats_col"></td>
+		<td class="rating_stats_col">
+			See more from <a href="/band?id=<?=$album->band_id?>"><?= $album->band_name ?></a>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
 		<td>
 			<?php if (!empty($this_bookmark)): ?>
 				<form method="POST" action="/remove">
@@ -55,28 +87,6 @@
 					<input type="submit" value="Bookmark">
 				</form>
 			<?php endif;?>
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td class="rating_stats_col">
-			See more from <a href="/band?id=<?=$album->band_id?>"><br>
-			<?= $album->band_name ?></a>
-		<td>
-	</tr>
-	<tr>
-		<td></td>
-		<td colspan=2 class="rating_stats_col">
-			<form method="POST" action="/rate">
-				@include('rate_form')
-				<input type="hidden" name="album" value="<?=$album->album_id?>">
-				<?php if(!empty($this_rating)): ?>
-					<input type="hidden" name="prev_rating" value="<?=$this_rating->rating?>">
-				<?php else: ?>
-					<input type="hidden" name="prev_rating" value="none">
-				<?php endif; ?>
-				<input type="submit" value="Submit">
-			</form>
 		</td>
 	</tr>
 </table>
