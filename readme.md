@@ -1,10 +1,7 @@
 ## Metal Ratings and Recommendations
-
-
 Or, P4 for DWA-15
 
-Live site URL:
-http://meta-metallurgy.rhcloud.com/
+Live site URL: http://meta-metallurgy.rhcloud.com/ (no longer hosted)
 
 Things that still need to be done:
 - Make the CSS responsive and prettier
